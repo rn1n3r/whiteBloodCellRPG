@@ -27,8 +27,8 @@ public class Creature
 	}
     }
     
-    public BufferedImage getIcon ()
-    {
-	return sprite;
+
+    public void show(Graphics g){
+	g.drawImage(sprite, locX, locY, null);
     }
 }

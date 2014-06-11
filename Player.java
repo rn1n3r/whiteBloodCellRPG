@@ -10,9 +10,23 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Creature
 {
-    
-    public Player ()
+
+    public Player (int type)
     {
-	super(0);
+	super (type);
+	locX = 0;
+	locY = 0;
     }
+
+
+    public void move (int i)
+    {
+	locX += (i % 2) * 20;
+	locY += (i / 2) * 20;
+
+    }
+
+
+
+
 }

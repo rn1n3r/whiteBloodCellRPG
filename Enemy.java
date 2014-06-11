@@ -14,8 +14,11 @@ public class Enemy extends Creature
     public Enemy ()
     {
 	super(0);
-	locX = (int)(Math.random()*31)* 20;
-	locY = (int)(Math.random()*31)* 20;
+	locX = (int)(Math.random()*30)* 20;
+	locY = (int)(Math.random()*30)* 20;
+	
+	while (locY == 0)//enemy doesn't spawn at player location
+	    locY =  (int)(Math.random()*30)* 20;
 	
     }
     
@@ -28,4 +31,6 @@ public class Enemy extends Creature
     {
 	return locY;
     }
+    
+
 }
