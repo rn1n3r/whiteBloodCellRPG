@@ -75,13 +75,13 @@ public class Map extends JFrame
 	public void keyPressed (KeyEvent e)
 	{
 	    if (e.getKeyCode () == KeyEvent.VK_W)
-		player1.move (-2);
+		player1.move (-2, enemiesOnMap);
 	    if (e.getKeyCode () == KeyEvent.VK_D)
-		player1.move (1);
+		player1.move (1, enemiesOnMap);
 	    if (e.getKeyCode () == KeyEvent.VK_S)
-		player1.move (2);
+		player1.move (2, enemiesOnMap);
 	    if (e.getKeyCode () == KeyEvent.VK_A)
-		player1.move (-1);
+		player1.move (-1, enemiesOnMap);
     
 	    showAll();
 	    repaint ();
