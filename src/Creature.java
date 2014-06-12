@@ -31,4 +31,17 @@ public class Creature
     public void show(Graphics g){
 	g.drawImage(sprite, locX, locY, null);
     }
+    
+    public void move(){
+	    //prevents the x values to go out of the screen
+	if (locX > 580)
+	    locX = 580;
+	else if (locX < 0)
+	    locX = 0;
+	//prevents the y values to go over the screen
+	if (locY > 580)
+	    locY = 580;
+	else if (locY < 0)
+	    locY = 0;
+    }
 }

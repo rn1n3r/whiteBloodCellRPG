@@ -12,13 +12,13 @@ import java.lang.Math;
 public class Map extends JFrame
 {
     private int[] [] map;
-    private Enemy[] enemiesOnMap;
-    private Player player;
+    private static Enemy[] enemiesOnMap;
     private BufferedImage bg;
     private JPanel grid;
-    private Player player1;
+    private static Player player1;
     Graphics g;
-
+    Timer t1;
+    
     public Map ()
     {
 
@@ -35,7 +35,6 @@ public class Map extends JFrame
 
 	// Array of creatures
 	enemiesOnMap = new Enemy [10];
-
     }
 
 
@@ -56,8 +55,15 @@ public class Map extends JFrame
     public static void main (String[] args)
     {
 	Map map = new Map ();
-	map.setVisible (true);
 	map.createEnemies (10);
+	map.setVisible (true);
+	
+	Timer t1 = new Timer (300, player1);
+	t1.start();
+	for(int i = 0; i < 10; i ++){
+	    Timer temp = new Timer (100, enemiesOnMap[i]);
+	    temp.start();
+	}
     }
     
     public void showAll(){//show everything and updates the screen
@@ -66,7 +72,8 @@ public class Map extends JFrame
 	player1.show (g);// draws player
 	
 	for (int i = 0 ; i < 10 ; i++)//draw enemies
-	    enemiesOnMap [i].show (g);
+	    if(enemiesOnMap[i].isAlive())
+		enemiesOnMap [i].show (g);
     }
 
 
@@ -97,7 +104,7 @@ public class Map extends JFrame
     }
 
 
-    class ImagePanel extends JPanel
+    class ImagePanel extends JPanel//draw images on the screen
     {
 	public BufferedImage image;
 
@@ -112,9 +119,8 @@ public class Map extends JFrame
 	{
 	    super.paintComponent (g);
 	    g.drawImage (image, 0, 0, getWidth (), getHeight (), null);
-
-
 	}
     }
 }
+
 
