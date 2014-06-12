@@ -59,6 +59,15 @@ public class Map extends JFrame
 	map.setVisible (true);
 	map.createEnemies (10);
     }
+    
+    public void showAll(){//show everything and updates the screen
+	g.setColor(Color.black);
+	g.fillRect(0, 0, getWidth(), getHeight());//clears screen
+	player1.show (g);// draws player
+	
+	for (int i = 0 ; i < 10 ; i++)//draw enemies
+	    enemiesOnMap [i].show (g);
+    }
 
 
     class Controller implements KeyListener
@@ -73,8 +82,8 @@ public class Map extends JFrame
 		player1.move (2);
 	    if (e.getKeyCode () == KeyEvent.VK_A)
 		player1.move (-1);
-
-	    player1.show (g);
+    
+	    showAll();
 	    repaint ();
 	}
 
