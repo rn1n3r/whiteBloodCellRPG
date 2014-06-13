@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.lang.Math;
 
 
-public class Map extends JFrame
+public class Map extends JFrame implements ActionListener
 {
     private int[] [] map;
     private static Enemy[] enemiesOnMap;
@@ -62,6 +62,8 @@ public class Map extends JFrame
 	t1.start();
 	for(int i = 0; i < 10; i ++){
 	    Timer temp = new Timer (100, enemiesOnMap[i]);
+	    temp.addActionListener(map);
+	    temp.setInitialDelay(500);
 	    temp.start();
 	}
     }
@@ -76,6 +78,11 @@ public class Map extends JFrame
 		enemiesOnMap [i].show (g);
     }
 
+    public void actionPerformed (ActionEvent e)
+    {
+	showAll();
+	repaint();
+    }
 
     class Controller implements KeyListener
     {
