@@ -17,7 +17,8 @@ public class Map extends JFrame implements ActionListener
     private JPanel grid;
     private static Player player1;
     Graphics g;
-    Timer t1;
+    private static Timer t1,temp;
+    private boolean inDialog = false;
     
     public Map ()
     {
@@ -35,6 +36,7 @@ public class Map extends JFrame implements ActionListener
 
 	// Array of creatures
 	enemiesOnMap = new Enemy [10];
+        showDialog();
     }
 
 
@@ -61,7 +63,7 @@ public class Map extends JFrame implements ActionListener
 	Timer t1 = new Timer (300, player1);
 	t1.start();
 	for(int i = 0; i < 10; i ++){
-	    Timer temp = new Timer (100, enemiesOnMap[i]);
+	    temp = new Timer (100, enemiesOnMap[i]);
 	    temp.addActionListener(map);
 	    temp.setInitialDelay(500);
 	    temp.start();
@@ -77,28 +79,43 @@ public class Map extends JFrame implements ActionListener
 	    if(enemiesOnMap[i].isAlive())
 		enemiesOnMap [i].show (g);
     }
+    
+    public void showDialog()
+    {
+        inDialog = true;
+        g.setColor(Color.RED);
+        g.fillRect(0,400,200,600);
+    }
 
     public void actionPerformed (ActionEvent e)
     {
-	showAll();
-	repaint();
+        if (inDialog);
+        else
+        {
+            showAll();
+            repaint();
+        }
     }
 
     class Controller implements KeyListener
     {
 	public void keyPressed (KeyEvent e)
 	{
-	    if (e.getKeyCode () == KeyEvent.VK_W)
-		player1.move (-2, enemiesOnMap);
-	    if (e.getKeyCode () == KeyEvent.VK_D)
-		player1.move (1, enemiesOnMap);
-	    if (e.getKeyCode () == KeyEvent.VK_S)
-		player1.move (2, enemiesOnMap);
-	    if (e.getKeyCode () == KeyEvent.VK_A)
-		player1.move (-1, enemiesOnMap);
-    
-	    showAll();
-	    repaint ();
+            if (inDialog);
+            else
+            {
+                if (e.getKeyCode () == KeyEvent.VK_W)
+                    player1.move (-2, enemiesOnMap);
+                if (e.getKeyCode () == KeyEvent.VK_D)
+                    player1.move (1, enemiesOnMap);
+                if (e.getKeyCode () == KeyEvent.VK_S)
+                    player1.move (2, enemiesOnMap);
+                if (e.getKeyCode () == KeyEvent.VK_A)
+                    player1.move (-1, enemiesOnMap);
+
+                showAll();
+                repaint ();
+            }
 	}
 
 	public void keyReleased (KeyEvent e)

@@ -20,7 +20,7 @@ public class Creature
 	locX = locY = 0;
 	try
 	{
-	    sprite = ImageIO.read (new File (type + ".png"));
+	    sprite = ImageIO.read (Creature.class.getResource(type + ".png"));
 	}
 	catch (IOException e)
 	{
