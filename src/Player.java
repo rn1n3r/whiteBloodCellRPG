@@ -57,6 +57,12 @@ public class Player extends Creature implements ActionListener
 	    locY = 0;*/
     }
     
+    public void setLocation (int x, int y)
+    {
+        locX = x;
+        locY = y;
+    }
+    
     public void attack(Enemy enemy){
 	enemy.loseHealth(power);
     }

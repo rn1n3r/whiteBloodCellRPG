@@ -35,15 +35,7 @@ public class Enemy extends Creature implements ActionListener
 	super.move();
     }
     
-    public int getX()
-    {
-	return locX;
-    }
     
-    public int getY()
-    {
-	return locY;
-    }
     
     public boolean isAlive(){
 	return !dead;//check if enemy is alive
