@@ -13,11 +13,11 @@ public class Map extends JFrame implements ActionListener
 {
     private int[] [] map;
     private static Enemy[] enemiesOnMap;
-    private BufferedImage bg, bg2;
+    private BufferedImage bg, bg2, dialogPic;
     private JPanel mainPanel, grid, grid1;
     private CardLayout cl = new CardLayout();
     private static Player player1;
-    Graphics g;
+    private Graphics g;
     private static Timer t1,temp;
     private boolean inDialog = false;
     private int currentDialog = 0;
@@ -27,17 +27,22 @@ public class Map extends JFrame implements ActionListener
 
 	// GUI stuff
 	setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-	bg = new BufferedImage (600, 600, BufferedImage.TYPE_INT_RGB);
+	
+        try
+        {
+            bg = ImageIO.read (Map.class.getResource("bkgr-1.png"));
+            bg2 = ImageIO.read (Map.class.getResource("grdi1.png"));
+        }
+        catch (IOException e){}
+        
+        
+        
 	grid = new ImagePanel (bg);
 	g = bg.getGraphics ();
 	grid.setPreferredSize (new Dimension (600, 600));
         
         //second map
-        try
-        {
-            bg2 = ImageIO.read (Map.class.getResource("grdi1.png"));
-        }
-        catch (IOException e){}
+        
         grid1 = new ImagePanel(bg2);
         
         mainPanel = new JPanel (cl);
@@ -62,12 +67,11 @@ public class Map extends JFrame implements ActionListener
     public void createEnemies (int n)
     {
 	player1 = new Player (1);
-	player1.show (g);
-
+	
 	for (int i = 0 ; i < n ; i++)
 	{
 	    enemiesOnMap [i] = new Enemy ();
-	    enemiesOnMap [i].show (g);
+	    
 	}
 	repaint ();
     }
@@ -90,35 +94,25 @@ public class Map extends JFrame implements ActionListener
         map.showDialog("0",2);
     }
     
-    public void showAll(){//show everything and updates the screen
-	g.setColor(Color.black);
-	g.fillRect(0, 0, getWidth(), getHeight());//clears screen
-	player1.show (g);// draws player
-	
-	for (int i = 0 ; i < 10 ; i++)//draw enemies
-	    if(enemiesOnMap[i].isAlive())
-		enemiesOnMap [i].show (g);
-    }
     
     public void showDialog(String level, int numDialog)
     {
         inDialog = true; // boolean to pause timer when in dialog
         currentDialog = 0; 
-        BufferedImage dialogPic = null;
+        dialogPic = null;
         try
         {
             dialogPic =ImageIO.read (Map.class.getResource(level + "" +currentDialog + ".png")); // load first dialog picture
         }
         catch (IOException e){}
         
-        g.drawImage(dialogPic, 0, 450, null); // draw it
                 
         while (currentDialog != numDialog) // until all the dialogs have been cycled through
         {
            try
            {
                 dialogPic =ImageIO.read (Map.class.getResource(level + "" +currentDialog + ".png")); // currentDialog is updated through Controller
-                g.drawImage(dialogPic, 0, 450, null);
+                
                 repaint();
            }
            catch (IOException e){}
@@ -134,7 +128,7 @@ public class Map extends JFrame implements ActionListener
         if (inDialog);
         else
         {
-            showAll();
+            
             repaint();
         }
     }
@@ -166,11 +160,11 @@ public class Map extends JFrame implements ActionListener
                 if (player1.getX() <0)
                 {
                     player1.setLocation(580,player1.getY())
-                    cl.show(mainPanel, "2");
-                    g = bg2.getGraphics();
+                    //cl.show(mainPanel, "2");
+                    //g = bg2.getGraphics();
                 }
 
-                showAll();
+                //showAll();
                 repaint ();
             }
 	}
@@ -191,8 +185,11 @@ public class Map extends JFrame implements ActionListener
 
 	public ImagePanel (BufferedImage i)
 	{
+            
 	    super ();
-	    image = i;
+	    image = i; 
+            
+            
 	}
 
 
@@ -200,7 +197,15 @@ public class Map extends JFrame implements ActionListener
 	{
 	    super.paintComponent (g);
 	    g.drawImage (image, 0, 0, getWidth (), getHeight (), null);
-	}
+            for (int i = 0 ; i < 10 ; i++)//draw enemies
+            {
+                if(enemiesOnMap[i].isAlive())
+                    enemiesOnMap [i].show (g);
+            }
+            if (inDialog)
+                g.drawImage(dialogPic, 0, 450, null);
+            player1.show(g);
+        }
     }
 }
 

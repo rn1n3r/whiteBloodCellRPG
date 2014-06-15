@@ -44,7 +44,7 @@ public class Player extends Creature implements ActionListener
 	    canMove = false;
 	}
 	
-	super.move();
+	//super.move();
 	/*//prevents the x values to go out of the screen
 	if (locX > 580)
 	    locX = 580;

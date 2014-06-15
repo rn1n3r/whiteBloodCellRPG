@@ -42,7 +42,7 @@ public class Creature
     
     public void move(){
 	    //prevents the x values to go out of the screen
-        /*
+        
 	if (locX > 580)
 	    locX = 580;
 	if (locX < 0)
@@ -52,6 +52,6 @@ public class Creature
 	    locY = 580;
 	else if (locY < 0)
 	    locY = 0;
-      */
+      
     }
 }
