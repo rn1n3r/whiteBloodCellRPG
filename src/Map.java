@@ -21,6 +21,8 @@ public class Map extends JFrame implements ActionListener {
     private static Timer t1, temp;
     private boolean inDialog = false;
     private int currentDialog = 0;
+    private int numDialog;
+    private String diaLevel;
 
     public Map() {
 
@@ -77,10 +79,12 @@ public class Map extends JFrame implements ActionListener {
             temp.setInitialDelay(500);
             temp.start();
         }
-        map.showDialog("0", 2);
+
     }
 
-    public void showDialog(String level, int numDialog) {
+    public void showDialog(String level, int num) {
+        diaLevel = level;
+        numDialog = num;
         inDialog = true; // boolean to pause timer when in dialog
         currentDialog = 0;
         dialogPic = null;
@@ -89,24 +93,14 @@ public class Map extends JFrame implements ActionListener {
         } catch (IOException e) {
         }
 
-        while (currentDialog != numDialog) // until all the dialogs have been cycled through
-        {
-            try {
-                dialogPic = ImageIO.read(Map.class.getResource(level + "" + currentDialog + ".png")); // currentDialog is updated through Controller
-
-                repaint();
-            } catch (IOException e) {
-            }
-        }
-
-        inDialog = false;
         repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (inDialog); else {
+        if (!inDialog) {
 
             repaint();
+
         }
     }
 
@@ -117,11 +111,24 @@ public class Map extends JFrame implements ActionListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) // update currentDialog
                 {
                     currentDialog++;
+                    if (currentDialog != numDialog) {
+
+                        try {
+                            dialogPic = ImageIO.read(Map.class.getResource(diaLevel + "" + currentDialog + ".png")); // currentDialog is updated through Controller
+                        } catch (IOException q) {
+                        }
+                        repaint();
+
+                    } else {
+                        inDialog = false;
+                    }
+
                     System.out.print("lol");
                 }
             } else {
                 if (e.getKeyCode() == KeyEvent.VK_W) {
                     player1.move(-2, enemiesOnMap);
+                    showDialog("0", 2);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     player1.move(1, enemiesOnMap);
@@ -134,7 +141,7 @@ public class Map extends JFrame implements ActionListener {
                 }
 
                 if (player1.getX() < 0) {
-                    player1.setLocation(580, player1.getY())
+                    player1.setLocation(580, player1.getY());
                     cl.show(mainPanel, "2");
                     g.dispose();
                     g = bg2.getGraphics();
@@ -166,16 +173,20 @@ public class Map extends JFrame implements ActionListener {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-            for (int i = 0; i < 10; i++)//draw enemies
+
             {
-                if (enemiesOnMap[i].isAlive()) {
-                    enemiesOnMap[i].show(g);
+                for (int i = 0; i < 10; i++)//draw enemies
+                {
+                    if (enemiesOnMap[i].isAlive()) {
+                        enemiesOnMap[i].show(g);
+                    }
                 }
+
+                if (inDialog) {
+                    g.drawImage(dialogPic, 0, 450, null);
+                }
+                player1.show(g);
             }
-            if (inDialog) {
-                g.drawImage(dialogPic, 0, 450, null);
-            }
-            player1.show(g);
         }
     }
 }
