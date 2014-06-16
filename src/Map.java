@@ -147,6 +147,10 @@ public class Map extends JFrame implements ActionListener {
                     if (current != 0  && player1.getX() == 580 && player1.getY() < 280 && player1.getY() > 200){
                         if(isQuestDone()){
                             player1.setLocation(0, player1.getY());
+                            //~~~reused code
+                            for (int i = 0; i < 10; i++) {
+                                enemiesOnMap[i] = new Enemy();
+                            }        
                             
                             cl.show(mainPanel, "" + 0);
                             current = 0;
