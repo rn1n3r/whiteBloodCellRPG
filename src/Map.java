@@ -11,18 +11,22 @@ import java.lang.Math;
 
 public class Map extends JFrame implements ActionListener {
 
-    private int[][] map;
-    private static Enemy[] enemiesOnMap;
-    private BufferedImage bg, bg2, dialogPic;
-    private JPanel mainPanel, grid, grid1;
+    private int[][] map;//main map
+    private static Enemy[] enemiesOnMap;//all enemies
+    private BufferedImage bg, bg2, dialogPic; //for each room and dialog    
+    private JPanel mainPanel, grid, grid1;//cardlayout panels, switching each room
+    
     private CardLayout cl = new CardLayout();
-    private static Player player1;
+    private static Player player1;//player
     private Graphics g;
-    private static Timer t1, temp;
+    private static Timer t1, temp;//time the enemies and player
     private boolean inDialog = false;
     private int currentDialog = 0;
     private int numDialog;
     private String diaLevel;
+    
+    //for different map
+    private int level, current; 
 
     public Map() {
 
@@ -39,12 +43,15 @@ public class Map extends JFrame implements ActionListener {
         g = bg.getGraphics();
         grid.setPreferredSize(new Dimension(600, 600));
 
-        //second map
+        //other map
         grid1 = new ImagePanel(bg2);
 
         mainPanel = new JPanel(cl);
-        mainPanel.add(grid, "1");
-        mainPanel.add(grid1, "2");
+        
+        level = 1;
+        current = 0;
+        mainPanel.add(grid, "0");
+        mainPanel.add(grid1, "1");
 
         this.setContentPane(mainPanel);
         pack();
@@ -55,9 +62,11 @@ public class Map extends JFrame implements ActionListener {
         enemiesOnMap = new Enemy[10];
 
     }
-
-    public void createEnemies(int n) {
+    public void createPlayer(){
+        
         player1 = new Player(1);
+    }
+    public void createEnemies(int n) {
 
         for (int i = 0; i < n; i++) {
             enemiesOnMap[i] = new Enemy();
@@ -68,13 +77,14 @@ public class Map extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         Map map = new Map();
+        map.createPlayer();
         map.createEnemies(10);
         map.setVisible(true);
 
         Timer t1 = new Timer(300, player1);
         t1.start();
         for (int i = 0; i < 10; i++) {
-            temp = new Timer(100, enemiesOnMap[i]);
+            temp = new Timer(400, enemiesOnMap[i]);
             temp.addActionListener(map);
             temp.setInitialDelay(500);
             temp.start();
@@ -128,23 +138,40 @@ public class Map extends JFrame implements ActionListener {
             } else {
                 if (e.getKeyCode() == KeyEvent.VK_W) {
                     player1.move(-2, enemiesOnMap);
-                    showDialog("0", 2);
+                    //showDialog("0", 2);
+
                 }
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     player1.move(1, enemiesOnMap);
+                    //going back after finishing a quest
+                    if (current != 0  && player1.getX() == 580 && player1.getY() < 280 && player1.getY() > 200){
+                        if(isQuestDone()){
+                            player1.setLocation(0, player1.getY());
+                            
+                            cl.show(mainPanel, "" + 0);
+                            current = 0;
+                            level ++;
+                            g.dispose();
+                            g = bg.getGraphics();
+                        }
+                        else{
+                            // prompts that quest is not done
+                        }
+                    }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     player1.move(2, enemiesOnMap);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     player1.move(-1, enemiesOnMap);
-                }
-
-                if (player1.getX() < 0) {
-                    player1.setLocation(580, player1.getY());
-                    cl.show(mainPanel, "2");
-                    g.dispose();
-                    g = bg2.getGraphics();
+                    
+                    if (current == 0 && player1.getX() == 0 && player1.getY() < 280 && player1.getY() > 200) {
+                        player1.setLocation(580, player1.getY());
+                        cl.show(mainPanel, "" + level);
+                        current = level;
+                        g.dispose();
+                        g = bg2.getGraphics();
+                    }
                 }
 
                 //showAll();
@@ -157,6 +184,22 @@ public class Map extends JFrame implements ActionListener {
 
         public void keyTyped(KeyEvent e) {
         }
+    }
+    
+    public boolean isQuestDone(){
+        if(level == 1){
+            boolean temp = true;
+            
+            for(int i = 0; i < 10 && temp; i ++){
+                if(enemiesOnMap[i].isAlive())
+                    temp = false;
+            }
+            
+            return temp;
+            
+        }
+        
+        return false;
     }
 
     class ImagePanel extends JPanel//draw images on the screen

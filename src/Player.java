@@ -38,8 +38,8 @@ public class Player extends Creature implements ActionListener {
             canMove = false;
         }
 
-	//super.move();
-	/*//prevents the x values to go out of the screen
+	super.move();
+	//prevents the x values to go out of the screen
          if (locX > 580)
          locX = 580;
          else if (locX < 0)
@@ -48,7 +48,7 @@ public class Player extends Creature implements ActionListener {
          if (locY > 580)
          locY = 580;
          else if (locY < 0)
-         locY = 0;*/
+         locY = 0;
     }
 
     public void setLocation(int x, int y) {
@@ -62,6 +62,12 @@ public class Player extends Creature implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         canMove = true;
+    }
+    
+    public boolean outOfBounds(){
+        if(locX > 580 || locX < 0 || locY > 580 || locY < 0)
+            return true;
+        return false;
     }
 
 }
