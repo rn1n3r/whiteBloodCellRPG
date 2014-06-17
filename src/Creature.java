@@ -34,6 +34,10 @@ public class Creature {
     public void show(Graphics g) {
         g.drawImage(sprite, locX, locY, null);
     }
+    public void setLocation(int x, int y) {
+        locX = x;
+        locY = y;
+    }
 
     public void move() {
 	    //prevents the x values to go out of the screen
