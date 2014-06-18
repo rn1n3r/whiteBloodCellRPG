@@ -201,6 +201,10 @@ public class Map extends JFrame implements ActionListener {
                 if (level == 2){
                     showDialog("2",1);
                 }
+                
+                if (level == 3){
+                    showDialog("3",1);
+                }
                 level++;
                 
                 
@@ -301,7 +305,7 @@ public class Map extends JFrame implements ActionListener {
                 }
                 
                 else if (stage == 3){
-                    npc2.show(g);
+                    npc3.show(g);
                 }
 
             }
