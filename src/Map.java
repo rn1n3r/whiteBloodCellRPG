@@ -13,8 +13,8 @@ public class Map extends JFrame implements ActionListener {
 
     private int[][] map;//main map
     private static Enemy[] enemiesOnMap;//all enemies
-    private BufferedImage bg, bg2, dialogPic; //for each room and dialog    
-    private JPanel mainPanel, grid, grid1;//cardlayout panels, switching each room
+    private BufferedImage bg, bg2, bg3, dialogPic; //for each room and dialog    
+    private JPanel mainPanel, grid, grid1, grid2;//cardlayout panels, switching each room
     private Creature npc1 = new Creature(3);
     private CardLayout cl = new CardLayout();
     private static Player player1;//player
@@ -27,8 +27,7 @@ public class Map extends JFrame implements ActionListener {
     private String diaLevel;
 
     //for different levels (quests)
-    private int level;
-
+    private int level = 1;
     //for different maps
     private int stage = 1;
 
@@ -40,22 +39,22 @@ public class Map extends JFrame implements ActionListener {
         try {
             bg = ImageIO.read(Map.class.getResource("bkgr-1.png"));
             bg2 = ImageIO.read(Map.class.getResource("bkgr-2.png"));
+            bg3 = ImageIO.read(Map.class.getResource("bkgr-3.png"));
         } catch (IOException e) {
         }
 
-        grid = new ImagePanel(bg);
+        grid = new ImagePanel(bg);//copies maps onto JPanels
+        grid1 = new ImagePanel(bg2);
+        grid2 = new ImagePanel (bg3);
+        
         g = bg.getGraphics();
         grid.setPreferredSize(new Dimension(600, 600));
 
-        //other map
-        grid1 = new ImagePanel(bg2);
-
         mainPanel = new JPanel(cl);
 
-        level = 1;
-
-        mainPanel.add(grid, "1");
+        mainPanel.add(grid, "1");//maps to rotation
         mainPanel.add(grid1, "2");
+        mainPanel.add(grid2, "3");
 
         this.setContentPane(mainPanel);
         pack();
@@ -68,15 +67,12 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public void createPlayer() {
-
         player1 = new Player(1);
     }
 
     public void createEnemies(int n) {
-
         for (int i = 0; i < n; i++) {
             enemiesOnMap[i] = new Enemy();
-
         }
         repaint();
     }
@@ -114,9 +110,7 @@ public class Map extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (!inDialog) {
-
             repaint();
-
         }
     }
 
@@ -139,7 +133,7 @@ public class Map extends JFrame implements ActionListener {
                         inDialog = false;
                     }
 
-                    System.out.print("lol");
+                    System.out.print("lol");//~~~ remove
                 }
             } else {
                 if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -162,10 +156,10 @@ public class Map extends JFrame implements ActionListener {
                     player1.move(-1, enemiesOnMap);
 
                 }
-                // first portal, check quests
+                
+                // check if player is on portal
                 if (player1.getX() == 20 && player1.getY() < 320 && player1.getY() > 240) {
                     if (level == 2) {
-                        
                         if (level > stage) {
                             notShown = true;
                             player1.setLocation(580, player1.getY());
@@ -174,12 +168,11 @@ public class Map extends JFrame implements ActionListener {
 
                             g.dispose();
                             g = bg2.getGraphics();
-
                         }
                     } 
 
                 }
-
+                //check if player has finished the quest
                 if (isQuestDone()) {
                     triggerDialog();
                 }
@@ -195,6 +188,7 @@ public class Map extends JFrame implements ActionListener {
 
                 showDialog("" + level, 2);
                 level++;
+                //npc location
             } else if (level == 1 && player1.getX() >= 280 && player1.getX() <= 320 && player1.getY() <= 40 && player1.getY() >= 0) {
                 showDialog("0", 3);
             }
@@ -208,11 +202,10 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public boolean isQuestDone() {
-        if (level == 1) {
-            boolean temp = true;
-
+        boolean temp = true;
+        if (level == 1) {//first quest
             int enemiesKilled = 0;
-            for (int i = 0; i < 10 && temp; i++) {
+            for (int i = 0; i < 10; i++) {
                 if (!enemiesOnMap[i].isAlive()) {
                     enemiesKilled++;
                 }
@@ -220,12 +213,21 @@ public class Map extends JFrame implements ActionListener {
             if (enemiesKilled < 1) {
                 temp = false;
             }
+        }
+        else if (level == 2){
 
-            return temp;
-
+            int enemiesKilled = 0;
+            for (int i = 0; i < 10; i++) {
+                if (!enemiesOnMap[i].isAlive()) {
+                    enemiesKilled++;
+                }
+            }
+            if (enemiesKilled < 10) {
+                temp = false;
+            }
         }
 
-        return false;
+        return temp;
     }
 
     class ImagePanel extends JPanel//draw images on the screen
