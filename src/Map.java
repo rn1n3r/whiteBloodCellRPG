@@ -16,6 +16,7 @@ public class Map extends JFrame implements ActionListener {
     private BufferedImage bg, bg2, bg3, dialogPic; //for each room and dialog    
     private JPanel mainPanel, grid, grid1, grid2;//cardlayout panels, switching each room
     private Creature npc1 = new Creature(3);
+    private Creature npc2 = new Creature (2);
     private CardLayout cl = new CardLayout();
     private static Player player1;//player
     private Graphics g;
@@ -35,7 +36,8 @@ public class Map extends JFrame implements ActionListener {
 
         // GUI stuff
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        npc1.setLocation(280, 0);
+        npc1.setLocation(280,0);
+        npc2.setLocation(280,0);
         try {
             bg = ImageIO.read(Map.class.getResource("bkgr-1.png"));
             bg2 = ImageIO.read(Map.class.getResource("bkgr-2.png"));
@@ -95,10 +97,15 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public void showDialog(String clevel, int num) {
+        showDialog(clevel, num, 0);
+    }
+    
+    public void showDialog (String clevel, int num, int cDia){
+        currentDialog = cDia;
         diaLevel = clevel;
         numDialog = num;
         inDialog = true; // boolean to pause timer when in dialog
-        currentDialog = 0;
+        currentDialog = cDia;
         dialogPic = null;
         try {
             dialogPic = ImageIO.read(Map.class.getResource(clevel + "" + currentDialog + ".png")); // load first dialog picture
@@ -184,14 +191,25 @@ public class Map extends JFrame implements ActionListener {
 
         public void triggerDialog() {
             if (isQuestDone() && notShown) {
+                
                 notShown = false;
-
-                showDialog("" + level, 2);
+                if (level == 1){
+                    showDialog("1", 2);
+                }
+                if (level == 2){
+                    showDialog("2",1);
+                }
                 level++;
+                
+                
                 //npc location
             } else if (level == 1 && player1.getX() >= 280 && player1.getX() <= 320 && player1.getY() <= 40 && player1.getY() >= 0) {
                 showDialog("0", 3);
             }
+            else if (level == 2 && player1.getX() >= 280 && player1.getX() <= 320 && player1.getY() <= 40 && player1.getY() >= 0) {
+                showDialog("a",2)
+            }
+            
         }
 
         public void keyReleased(KeyEvent e) {
@@ -222,7 +240,7 @@ public class Map extends JFrame implements ActionListener {
                     enemiesKilled++;
                 }
             }
-            if (enemiesKilled < 10) {
+            if (enemiesKilled < 2) {
                 temp = false;
             }
         }
@@ -256,8 +274,12 @@ public class Map extends JFrame implements ActionListener {
                 if (inDialog) {
                     g.drawImage(dialogPic, 0, 450, null);
                 }
-
-                npc1.show(g);
+                if (stage == 1){
+                    npc1.show(g);
+                }
+                else if (stage == 2){
+                    npc2.show(g);
+                }
 
             }
         }
