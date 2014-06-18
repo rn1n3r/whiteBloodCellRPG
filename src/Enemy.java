@@ -15,7 +15,7 @@ public class Enemy extends Creature implements ActionListener {
 
     public Enemy() {
         super(0);
-        locX = (int) (Math.random() * 30) * 20;
+        locX = (int) (Math.random() * 30) * 20;//random location on grid
         locY = (int) (Math.random() * 30) * 20;
         defense = 0;
         dead = false;
@@ -27,14 +27,14 @@ public class Enemy extends Creature implements ActionListener {
     }
 
     public void move() {//doesn't prevent overlap of enemies
-        int moving = ((int) (Math.random() * 3) - 1) * 20;
+        int moving = ((int) (Math.random() * 3) - 1) * 20;//move one left/right
         if (moving == 0) {
-            locY += ((int) (Math.random() * 3) - 1) * 20;
+            locY += ((int) (Math.random() * 3) - 1) * 20;//move one up/down
         } else {
             locX += moving;
         }
 
-        super.move();
+        super.move();//prevents going offscreen
     }
 
     public boolean isAlive() {
@@ -59,5 +59,10 @@ public class Enemy extends Creature implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         this.move();
+    }
+    
+    public void respawn(){
+        hp = 100;
+        dead = false;
     }
 }

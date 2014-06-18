@@ -13,7 +13,7 @@ public class Player extends Creature implements ActionListener {
     private int power;//for attack power
     private boolean canMove;
 
-    public Player(int type) {
+    public Player(int type) {//creates player
         super(type);
         locX = 0;
         locY = 0;
@@ -25,7 +25,7 @@ public class Player extends Creature implements ActionListener {
     public void move(int i, Enemy[] enemiesOnMap) {
         boolean moving = true;
 
-        for (int j = 0; j < enemiesOnMap.length; j++) {
+        for (int j = 0; j < enemiesOnMap.length; j++) {//checks for collision
             if (enemiesOnMap[j].getX() == locX + (i % 2) * 20 && enemiesOnMap[j].getY() == locY + (i / 2) * 20 && enemiesOnMap[j].isAlive()) {
                 moving = false;
                 attack(enemiesOnMap[j]);
@@ -52,7 +52,7 @@ public class Player extends Creature implements ActionListener {
     }
 
     
-
+    //ATTack an enemy
     public void attack(Enemy enemy) {
         enemy.loseHealth(power);
     }
@@ -60,11 +60,9 @@ public class Player extends Creature implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         canMove = true;
     }
-    
+    //locate if player is going out of bounds
     public boolean outOfBounds(){
-        if(locX > 580 || locX < 0 || locY > 580 || locY < 0)
-            return true;
-        return false;
+        return locX > 580 || locX < 0 || locY > 580 || locY < 0;
     }
 
 }
