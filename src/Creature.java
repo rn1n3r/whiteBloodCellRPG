@@ -58,9 +58,10 @@ public class Creature { //used for everything that moves including player and np
         }
     }
             
-    public void collisionCheck(Creature creature){
+    public void collisionCheck(Creature creature){ //checks to see if player overlaps with another creature
+												   //originally intended to stop player from going into NPC
         if (this.getX() == creature.getX()|| this.getY() == creature.getY()){
-            //move the player away?
+            //move the player away
             this.setLocation(this.getX()-40, this.getY()-40);
         }
     }

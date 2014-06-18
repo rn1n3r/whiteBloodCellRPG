@@ -15,8 +15,8 @@ public class Map extends JFrame implements ActionListener {
     private static Enemy[] enemiesOnMap;//all enemies
     private BufferedImage bg, bg2, bg3, dialogPic; //for each room and dialog    
     private JPanel mainPanel, grid, grid1, grid2;//cardlayout panels, switching each room
-    private Creature npc1 = new Creature(3); //guide 1
-    private Creature npc2 = new Creature (2); //guide 2
+    private Creature npc1 = new Creature(3); //eosinophil
+    private Creature npc2 = new Creature (2); //npc2
     private Creature npc3 = new Creature (4); //commander t
     private CardLayout cl = new CardLayout();
     private static Player player1;//player

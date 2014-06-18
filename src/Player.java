@@ -52,7 +52,7 @@ public class Player extends Creature implements ActionListener {
     }
 
     
-    //ATTack an enemy
+    //Attack an enemy
     public void attack(Enemy enemy) {
         enemy.loseHealth(power);
     }

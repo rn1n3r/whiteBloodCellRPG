@@ -61,7 +61,7 @@ public class Enemy extends Creature implements ActionListener {
         this.move();
     }
     
-    public void respawn(){
+    public void respawn(){ //respawns enemies
         hp = 100;
         dead = false;
     }
