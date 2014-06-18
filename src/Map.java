@@ -15,8 +15,9 @@ public class Map extends JFrame implements ActionListener {
     private static Enemy[] enemiesOnMap;//all enemies
     private BufferedImage bg, bg2, bg3, dialogPic; //for each room and dialog    
     private JPanel mainPanel, grid, grid1, grid2;//cardlayout panels, switching each room
-    private Creature npc1 = new Creature(3);
-    private Creature npc2 = new Creature (2);
+    private Creature npc1 = new Creature(3); //guide 1
+    private Creature npc2 = new Creature (2); //guide 2
+    private Creature npc3 = new Creature (4); //commander t
     private CardLayout cl = new CardLayout();
     private static Player player1;//player
     private Graphics g;
@@ -84,7 +85,8 @@ public class Map extends JFrame implements ActionListener {
         map.createPlayer();
         map.createEnemies(10);
         map.setVisible(true);
-
+        
+        //controls speed of enemies
         Timer t1 = new Timer(30, player1);
         t1.start();
         for (int i = 0; i < 10; i++) {
@@ -207,7 +209,11 @@ public class Map extends JFrame implements ActionListener {
                 showDialog("0", 3);
             }
             else if (level == 2 && player1.getX() >= 280 && player1.getX() <= 320 && player1.getY() <= 40 && player1.getY() >= 0) {
-                showDialog("a",2)
+                showDialog("a",2);
+            }
+            
+            else if (level == 3 && player1.getX() >= 280 && player1.getX() <= 320 && player1.getY() <= 40 && player1.getY() >= 0) {
+                showDialog("c",0);
             }
             
         }
@@ -232,7 +238,7 @@ public class Map extends JFrame implements ActionListener {
                 temp = false;
             }
         }
-        else if (level == 2){
+        else if (level == 2){ //second quest
 
             int enemiesKilled = 0;
             for (int i = 0; i < 10; i++) {
@@ -241,6 +247,19 @@ public class Map extends JFrame implements ActionListener {
                 }
             }
             if (enemiesKilled < 2) {
+                temp = false;
+            }
+        }
+        
+        else if (level == 3){ //third quest
+
+            int enemiesKilled = 0;
+            for (int i = 0; i < 10; i++) {
+                if (!enemiesOnMap[i].isAlive()) {
+                    enemiesKilled++;
+                }
+            }
+            if (enemiesKilled < 3) {
                 temp = false;
             }
         }
@@ -278,6 +297,10 @@ public class Map extends JFrame implements ActionListener {
                     npc1.show(g);
                 }
                 else if (stage == 2){
+                    npc2.show(g);
+                }
+                
+                else if (stage == 3){
                     npc2.show(g);
                 }
 

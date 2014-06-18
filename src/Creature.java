@@ -54,6 +54,13 @@ public class Creature {
         } else if (locY < 0) {
             locY = 0;
         }
-
     }
+            
+    public void collisionCheck(Creature creature){
+        if (this.getX() == creature.getX()|| this.getY() == creature.getY()){
+            //move the player away?
+            this.setLocation(this.getX()-40, this.getY()-40);
+        }
+    }
+
 }
